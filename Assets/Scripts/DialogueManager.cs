@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DialogueManager : MonoBehaviour {
 
+	public TextMeshProUGUI textComponent;
 	public Text nameText;
 	public Text dialogueText;
 
@@ -15,15 +17,20 @@ public class DialogueManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		sentences = new Queue<string>();
+		animator.SetTrigger("close");
+
 	}
 
 	public void StartDialogue (Dialogue dialogue)
 	{
-		animator.SetBool("IsOpen", true);
-
 		nameText.text = dialogue.name;
 
 		sentences.Clear();
+
+        Debug.Log("Start dialogue");
+
+        Debug.Log(dialogue.sentences);
+
 
 		foreach (string sentence in dialogue.sentences)
 		{
@@ -31,6 +38,7 @@ public class DialogueManager : MonoBehaviour {
 		}
 
 		DisplayNextSentence();
+		animator.SetTrigger("pop");
 	}
 
 	public void DisplayNextSentence ()
@@ -48,10 +56,10 @@ public class DialogueManager : MonoBehaviour {
 
 	IEnumerator TypeSentence (string sentence)
 	{
-		dialogueText.text = "";
+		textComponent.text = "";
 		foreach (char letter in sentence.ToCharArray())
 		{
-			dialogueText.text += letter;
+			textComponent.text += letter;
 			yield return null;
 		}
 	}
@@ -59,6 +67,7 @@ public class DialogueManager : MonoBehaviour {
 	void EndDialogue()
 	{
 		animator.SetBool("IsOpen", false);
+		animator.SetTrigger("close");
 	}
 
 }

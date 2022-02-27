@@ -13,6 +13,8 @@ public class DroneMovement1 : MonoBehaviour
 
     void Start(){
         agent = GetComponent<NavMeshAgent>();
+        //agent.updateRotation = false;
+        //agent.updateUpAxis = false;
         GetComponent<FocusHandler>().onFocusChangedCallback += OnFocusChanged;
     }
 
@@ -41,7 +43,7 @@ public class DroneMovement1 : MonoBehaviour
 
         if (target != null){
 			move(target.position);
-			FaceTarget ();
+			FaceTarget();
 		}
     }
 
@@ -55,10 +57,14 @@ public class DroneMovement1 : MonoBehaviour
 			agent.stoppingDistance = newFocus.radius*.8f;
 			agent.updateRotation = false;
 			target = newFocus.interactionTransform;
+             Debug.Log("in focus");
+
 		} else{
 			agent.stoppingDistance = 0f;
 			agent.updateRotation = true;
 			target = null;
+        Debug.Log("not focus");
+
 		}
 	}
 
