@@ -41,30 +41,27 @@ public class DroneMovement1 : MonoBehaviour
             rb.AddForce(0, 0, -500 * Time.deltaTime);
         }
 
-        if (target != null){
+        /*if (target != null){
 			move(target.position);
-			FaceTarget();
-		}
+			// FaceTarget();
+		}*/
     }
 
-    public void move(Vector3 point){
+    /*public void move(Vector3 point){
         Debug.Log(agent);
         agent.SetDestination(point);
-    }
+    }*/
 
     void OnFocusChanged(Interactable newFocus){
 		if (newFocus != null){
 			agent.stoppingDistance = newFocus.radius*.8f;
 			agent.updateRotation = false;
 			target = newFocus.interactionTransform;
-             Debug.Log("in focus");
 
 		} else{
 			agent.stoppingDistance = 0f;
 			agent.updateRotation = true;
 			target = null;
-        Debug.Log("not focus");
-
 		}
 	}
 

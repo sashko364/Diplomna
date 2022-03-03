@@ -4,20 +4,30 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public float radius = 3f;
+    public float radius = 2f;
     public Transform interactionTransform;
+	public DialogueTrigger dialogue;
     bool isFocused = false;
     bool hasInteracted = false;
     Transform drone;
+
+    void Start() {
+		dialogue =  GetComponent<DialogueTrigger>();
+    }
 
     void Update()
     {
         if(isFocused){
             float distance = Vector3.Distance(drone.position, interactionTransform.position);
-            if(!hasInteracted && distance <= radius){
+            
+            if(!hasInteracted && distance >= radius){
                 hasInteracted = true;
-                Debug.Log("interacted");
-            }
+                dialogue.TriggerDialogue();
+            } 
+        } else {
+            OnDefocused();
+            hasInteracted = false;
+            dialogue.EndDialogue();
         }
     }
 

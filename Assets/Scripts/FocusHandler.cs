@@ -10,7 +10,6 @@ public class FocusHandler : MonoBehaviour
 	public OnFocusChanged onFocusChangedCallback;
 
 	public Interactable focus;	// Our current focus: Item, Enemy etc.
-	public DialogueTrigger dialogue;
 
 	//public LayerMask movementMask;		// The ground
 	public LayerMask interactionMask;	// Everything we can interact with
@@ -21,7 +20,6 @@ public class FocusHandler : MonoBehaviour
     void Start()
     {
         movement = GetComponent<DroneMovement1>();
-		dialogue =  GetComponent<DialogueTrigger>();
 	
         cam = Camera.main;
     }
@@ -67,24 +65,17 @@ public class FocusHandler : MonoBehaviour
     void GetFocus(){
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-		Debug.Log("in get focus");
 		if (Physics.Raycast(ray, out hit, interactionMask)){
-		Debug.Log("in get focus if");
-
 			//movement.move(hit.point);
             SetFocus(null);
-			dialogue.TriggerDialogue();
 		}
     }
 
     void GoToFocus(){
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-		Debug.Log("in goto focus");
 
 		if (Physics.Raycast(ray, out hit, 100f, interactionMask)){
-		Debug.Log("in goto focus if");
-
             SetFocus(hit.collider.GetComponent<Interactable>());
 		}
     }

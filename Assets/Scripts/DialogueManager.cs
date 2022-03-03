@@ -6,9 +6,7 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour {
 
-	public TextMeshProUGUI textComponent;
 	public Text nameText;
-	public Text dialogueText;
 
 	public Animator animator;
 
@@ -17,28 +15,29 @@ public class DialogueManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		sentences = new Queue<string>();
-		animator.SetTrigger("close");
+		animator.SetBool("IsOpen",  false);
+
 
 	}
 
 	public void StartDialogue (Dialogue dialogue)
 	{
-		nameText.text = dialogue.name;
+		Debug.Log(nameText);
+		Debug.Log(dialogue.name);
 
+		nameText.name = dialogue.name;
+		
+		animator.SetBool("IsOpen",  true);
 		sentences.Clear();
-
-        Debug.Log("Start dialogue");
-
-        Debug.Log(dialogue.sentences);
-
 
 		foreach (string sentence in dialogue.sentences)
 		{
 			sentences.Enqueue(sentence);
+			nameText.text = sentence;
+
 		}
 
-		DisplayNextSentence();
-		animator.SetTrigger("pop");
+		 DisplayNextSentence();
 	}
 
 	public void DisplayNextSentence ()
@@ -56,18 +55,20 @@ public class DialogueManager : MonoBehaviour {
 
 	IEnumerator TypeSentence (string sentence)
 	{
-		textComponent.text = "";
-		foreach (char letter in sentence.ToCharArray())
-		{
-			textComponent.text += letter;
-			yield return null;
-		}
+		nameText.text = sentence;
+		yield return null;
+		// foreach (char letter in sentence.ToCharArray())
+		// {
+		// 	nameText.text += letter;
+		// 	yield return null;
+		// }
 	}
 
-	void EndDialogue()
+	public void EndDialogue()
 	{
+		nameText.text = "";
+		sentences.Clear();
 		animator.SetBool("IsOpen", false);
-		animator.SetTrigger("close");
 	}
 
 }
